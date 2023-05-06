@@ -4,7 +4,8 @@
   "description": "webcup projecct",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.mjs",
+    "start": "node index.mjs"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/razafindratsiza/24h-webcup/issues"
   },
-  "homepage": "https://github.com/razafindratsiza/24h-webcup#readme"
+  "homepage": "https://github.com/razafindratsiza/24h-webcup#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
 }
