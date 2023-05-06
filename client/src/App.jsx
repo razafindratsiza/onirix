@@ -1,42 +1,36 @@
-import React, { useState } from 'react';
+import { useState } from "react";
+import axios from "axios";
+function App() {
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
 
-function Chatbot() {
-  const [input, setInput] = useState('');
-  const [output, setOutput] = useState('');
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  function handleInputChange(event) {
-    setInput(event.target.value);
-  }
-
-  function handleFormSubmit(event) {
-    event.preventDefault();
-
-    // Use an API to get a response to the user's input
-    fetch(`https://your-api-endpoint.com/?input=${input}`)
-      .then(response => response.json())
-      .then(data => {
-        // Set the output to the response from the API
-        setOutput(data.response);
+    // Send a request to the server with the prompt
+    axios
+      .post("http://localhost:8080/chat", { prompt })
+      .then((res) => {
+        // Update the response state with the server's response
+        setResponse(res.data);
       })
-      .catch(error => {
-        console.error(error);
+      .catch((err) => {
+        console.error(err);
       });
-  }
+  };
 
   return (
     <div>
-      <form onSubmit={handleFormSubmit}>
-        <input type="text" value={input} onChange={handleInputChange} />
-        <button type="submit">Send</button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+        />
+        <button type="submit">Submit</button>
       </form>
-      <canvas
-        width={600}
-        height={400}
-        style={{ border: '1px solid black' }}
-      />
-      <p>{output}</p>
+      <p>{response}</p>
     </div>
   );
 }
-
-export default Chatbot;
+export default App

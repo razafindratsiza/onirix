@@ -1,70 +1,36 @@
-const { ApolloServer, PubSub } = require('apollo-server-express');
-const { execute, subscribe } = require('graphql');
-const { createServer } = require('http');
-const express = require('express');
-const ws = require('ws');
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
-const pubsub = new PubSub();
+const { Configuration, OpenAIApi } = require("openai");
 
-// Define your schema and resolvers
-const typeDefs = `
-  type Query {
-    hello: String
-  }
-
-  type Subscription {
-    greeting: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => 'Hello World',
-  },
-  Subscription: {
-    greeting: {
-      subscribe: (_, __, { resourceId }) => {
-        // Subscribe to the "GREETING" topic for the resourceId
-        return pubsub.asyncIterator(`GREETING:${resourceId}`);
-      },
-    },
-  },
-};
-
-// Create an Apollo Server instance
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  subscriptions: {
-    path: '/subscriptions',
-    onConnect: (connectionParams, webSocket, context) => {
-      // Extract the resource ID from the request URL
-      const resourceId = webSocket.upgradeReq.url.match(/\/subscriptions\/([^/]+)/)[1];
-
-      // Add the resourceId to the `context` for later use
-      context.resourceId = resourceId;
-    },
-  },
+const configuration = new Configuration({
+  apiKey: "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",
 });
+const openai = new OpenAIApi(configuration);
 
-// Create an Express application
+// Set up the server
 const app = express();
-server.applyMiddleware({ app });
+app.use(bodyParser.json());
+app.use(cors())
 
-// Create a WebSocket server and integrate with Apollo Server
-const httpServer = createServer(app);
-const wsServer = new ws.Server({ server: httpServer });
-httpServer.listen({ port: 5000 }, () => {
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
-  console.log(`🚀 Subscriptions ready at ws://localhost:4000${server.subscriptionsPath}`);
+// Set up the ChatGPT endpoint
+app.post("/chat", async (req, res) => {
+  // Get the prompt from the request
+  const { prompt } = req.body;
+
+  // Generate a response with ChatGPT
+  const completion = await openai.createChatCompletion(
+    {
+      "model": "gpt-3.5-turbo",
+      "messages": [{"role": "user", "content": "Hello!"}]
+    });
+    console.log(completion.data/choices)
+  res.send(completion.data.choices[0].text);
 });
 
-// Handle WebSocket connections
-wsServer.on('connection', (socket, request) => {
-  const connectionParams = {
-    headers: request.headers,
-  };
-
-  // Create a subscription server
-  server.createSubscriptionServer(socket, connectionParams);
+// Start the server
+const port = 8080;
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
