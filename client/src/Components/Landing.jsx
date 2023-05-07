@@ -1,6 +1,7 @@
 import React from 'react';
 import bannerImg from '../assets/artificial-intelligence-concept.jpg'
-const Landing = () => {
+import Inr from '../assets/Inr.jpg'
+const Landing = (props) => {
     return (
         <section className="banner_part">
             <div className="container">
@@ -16,10 +17,10 @@ const Landing = () => {
                                 <div className='d-flex'>
                                     <div className='product-description'>
                                         <div className='product-description-text'>
-                                            Suite a notre découverte récente, l'institut de recherche pour le rêve a créer ce plateforme pour mieux vous aider a prédire la signification de vos rêves.
-                                            
+                                            Suite a notre découverte réçente, l'institut de recherche pour le rêve a créer ce plateforme pour mieux vous aider a prédire la signification de vos rêves.
+
                                         </div>
-                                        <a href="#" className="btn_1">Commencer</a>
+                                        <a href="#" className="btn_1" onClick={() => props.onClick('chat')}> Commencer</a>
                                     </div>
                                     <div className="d-flex product-banner-img ">
                                         <div className="banner_bg ">
@@ -29,13 +30,20 @@ const Landing = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className='d-flex' style={{marginBottom: 20}}>
+                            <div className='img col-md-6'>
+                                <img className='about-image' src={Inr} />
+                            </div>
+                            <div className='AboutColumn'>
+                                <h1>institut de recherche pour les rêves</h1>
+                                <div className='product-description-text'>
+                                    Nous faisons de recherche pour vous prédire l'avenir
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="hero-app-1 custom-animation"><img src="img/animate_icon/icon_1.png" alt="" /></div>
-            <div className="hero-app-5 custom-animation2"><img src="img/animate_icon/icon_3.png" alt="" /></div>
-            <div className="hero-app-7 custom-animation3"><img src="img/animate_icon/icon_2.png" alt="" /></div>
-            <div className="hero-app-8 custom-animation"><img src="img/animate_icon/icon_4.png" alt="" /></div>
         </section>
     );
 }

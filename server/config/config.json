@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "sosety",
-    "password": "3M?ZEJlMV!zh",
+    "password": "fm4{B-9#}c8B",
     "database": "sosety_webcup",
     "host": "run1.hodi.host",
     "dialect": "mysql",
@@ -16,8 +16,8 @@
   },
   "production": {
     "username": "sosety",
-    "password": "3M?ZEJlMV!zh",
-    "database": "database_production",
+    "password": "fm4{B-9#}c8B",
+    "database": "sosety_webcup",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
